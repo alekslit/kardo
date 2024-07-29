@@ -3,6 +3,9 @@ package ru.yandex.kardo.user;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @Builder
@@ -18,10 +21,63 @@ public class User {
     private Long id;
 
     // имя пользователя:
-    @Column(name = "name")
-    private String name;
+    @Column(name = "first_name")
+    private String firstName;
 
-    //электронная почта:
+    // фамилия пользователя:
+    @Column(name = "last_name")
+    private String lastName;
+
+    // отчество пользователя:
+    @Column(name = "patronymic")
+    private String patronymic;
+
+    // дата рождения пользователя:
+    @Column(name = "birthday")
+    private LocalDate birthday;
+
+    // пол пользователя:
+    @Column(name = "sex")
+    @Enumerated(EnumType.STRING)
+    private Sex sex;
+
+    // электронная почта:
     @Column(name = "email")
     private String email;
+
+    // номер телефона пользователя:
+    @Column(name = "phone")
+    private String phone;
+
+    // ссылка на страницу пользователя в социальной сети:
+    @Column(name = "social_link")
+    private String social_link;
+
+    // страна проживания пользователя:
+    @Column(name = "country")
+    private String country;
+
+    // регион проживания пользователя:
+    @Column(name = "region")
+    private String region;
+
+    // город проживания пользователя:
+    @Column(name = "city")
+    private String city;
+
+    // ссылка на портфолио пользователя:
+    @Column(name = "portfolio_link")
+    private String portfolio_link;
+
+    // информация о пользователе / о себе / опыт и достижения:
+    @Column(name = "about_user")
+    private String about_user;
+
+    // пароль от аккаунта пользователя:
+    @Column(name = "password")
+    private String password;
+
+    // дата и время регистрации пользователя:
+    @Column(name = "registration_date")
+    private LocalDateTime registrationDate;
 }
