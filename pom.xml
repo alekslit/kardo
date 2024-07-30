@@ -20,7 +20,7 @@
 	<properties>
 		<java.version>17</java.version>
 		<lombok.version>1.18.30</lombok.version>
-		<logbook-spring-boot-starter.version>2.16.0</logbook-spring-boot-starter.version>
+		<logbook-spring-boot-starter.version>3.7.2</logbook-spring-boot-starter.version>
 	</properties>
 
 	<dependencies>

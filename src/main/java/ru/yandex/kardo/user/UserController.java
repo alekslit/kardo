@@ -20,4 +20,10 @@ public class UserController {
     public NewUserResponse createUser(@Valid @RequestBody NewUserRequest userRequest) {
         return UserMapper.userToNewUserResponse(userService.saveUser(userRequest));
     }
+
+    // TODO проверочный метод - убрать:
+    @GetMapping("/{userId}")
+    public User getUserById(@PathVariable Long userId) {
+        return userService.getUserById(userId);
+    }
 }

@@ -31,4 +31,10 @@ public class UserServiceImpl implements UserService {
 
         return user;
     }
+
+    // TODO проверочный метод - убрать:
+    @Override
+    public User getUserById(Long userId) {
+        return userRepository.findById(userId).orElse(null);
+    }
 }
