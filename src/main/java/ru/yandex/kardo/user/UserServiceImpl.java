@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 import ru.yandex.kardo.exception.AlreadyExistException;
 import ru.yandex.kardo.user.dto.NewUserRequest;
 
-import static ru.yandex.kardo.exception.AlreadyExistException.DUPLICATE_USER_EMAIL_ADVICE;
+import java.util.Optional;
+
+import static ru.yandex.kardo.exception.AlreadyExistException.ALREADY_EXIST_EXCEPTION_REASON;
 import static ru.yandex.kardo.exception.AlreadyExistException.DUPLICATE_USER_EMAIL_MESSAGE;
 
 @Service
@@ -25,8 +27,8 @@ public class UserServiceImpl implements UserService {
         } catch (DataIntegrityViolationException e) {
             log.debug("{}: {}{}.", AlreadyExistException.class.getSimpleName(),
                     DUPLICATE_USER_EMAIL_MESSAGE, userRequest.getEmail());
-            throw new AlreadyExistException(DUPLICATE_USER_EMAIL_MESSAGE + userRequest.getEmail(),
-                    DUPLICATE_USER_EMAIL_ADVICE);
+            throw new AlreadyExistException(ALREADY_EXIST_EXCEPTION_REASON,
+                    DUPLICATE_USER_EMAIL_MESSAGE + userRequest.getEmail());
         }
 
         return user;
@@ -36,5 +38,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserById(Long userId) {
         return userRepository.findById(userId).orElse(null);
+    }
+
+    @Override
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 }

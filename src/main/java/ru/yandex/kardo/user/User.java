@@ -2,9 +2,11 @@ package ru.yandex.kardo.user;
 
 import jakarta.persistence.*;
 import lombok.*;
+import ru.yandex.kardo.authentication.role.Role;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -13,6 +15,8 @@ import java.time.LocalDateTime;
 @Table(name = "users", schema = "public")
 @AllArgsConstructor
 @NoArgsConstructor
+@NamedEntityGraph(name = "userRoles", attributeNodes = @NamedAttributeNode("roles"))
+// TODO Чтобы загрузить сущность с ленивой загрузкой принудительно: @EntityGraph(value = "userRoles")
 public class User {
     // идентификатор пользователя:
     @Id
@@ -80,4 +84,11 @@ public class User {
     // дата и время регистрации пользователя:
     @Column(name = "registration_date")
     private LocalDateTime registrationDate;
+
+    // роли пользователя (уровни доступа):
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles;
 }
