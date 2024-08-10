@@ -23,19 +23,17 @@ public class DirectionServiceImpl implements DirectionService {
     }
 
     @Override
-    public Direction deleteDirection(Integer dirId) {
+    public void deleteDirection(Integer dirId) {
         log.debug("{} = {}.", "Попытка удалить объект Direction по id", dirId);
         // проверим, существует ли такое направление:
-        Direction direction = getDirectionById(dirId);
+        getDirectionById(dirId);
         directionRepository.deleteById(dirId);
-
-        return direction;
     }
 
     /*--------------------Вспомогательные методы--------------------*/
     @Override
-    public Direction getDirectionById(Integer dirId) {
-        return directionRepository.findById(dirId).orElseThrow(() -> {
+    public void getDirectionById(Integer dirId) {
+        directionRepository.findById(dirId).orElseThrow(() -> {
             log.debug("{}: {}{}.", NotFoundException.class.getSimpleName(),
                     DIRECTION_ID_NOT_FOUND_MESSAGE, dirId);
             return new NotFoundException(NOT_FOUND_EXCEPTION_REASON,

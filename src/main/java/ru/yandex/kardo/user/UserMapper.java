@@ -23,8 +23,8 @@ public final class UserMapper {
                 .password(userRequest.getPassword())
                 .registrationDate(LocalDateTime.now())
                 .roles(Collections.singleton(Role.builder()
-                        .id(1)
-                        .name(RoleName.USER)
+                        .id(2)
+                        .name(RoleName.ADMIN)
                         .build()))
                 .build();
     }

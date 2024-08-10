@@ -16,7 +16,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
                 @Tag(name = "ADMIN: Пользователи",
                         description = "API c уровнем доступа ADMIN для работы с пользователями"),
                 @Tag(name = "PUBLIC: Аутентификация",
-                        description = "API для аутентификации зарегистрированных пользователей")
+                        description = "API для аутентификации зарегистрированных пользователей"),
+                @Tag(name = "ADMIN: Роли",
+                        description = "API c уровнем доступа ADMIN для работы с ролями"),
+                @Tag(name = "ADMIN: Направления",
+                        description = "API c уровнем доступа ADMIN для работы с направлениями")
         })
 public class OpenApiConfig {
 }

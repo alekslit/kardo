@@ -5,7 +5,7 @@ import java.util.List;
 public interface DirectionService {
     List<Direction> getAllDirections();
 
-    Direction deleteDirection(Integer dirId);
+    void deleteDirection(Integer dirId);
 
-    Direction getDirectionById(Integer dirId);
+    void getDirectionById(Integer dirId);
 }

@@ -38,11 +38,29 @@ public final class ApiExceptionMessageValue {
             "    \"message\": \"Срок действия токена истёк\",\n" +
             "    \"timestamp\": \"2024-08-10 05:16:06\"\n" +
             "}";
-    public final static String GET_USER_BY_ID_404 = "{\n" +
+    public final static String ACCESS_DENIED_403 = "{\n" +
+            "    \"status\": \"403 FORBIDDEN\",\n" +
+            "    \"reason\": \"Ошибка доступа\",\n" +
+            "    \"message\": \"Недостаточно прав доступа для просмотра ресурса\",\n" +
+            "    \"timestamp\": \"2024-08-10 21:27:30\"\n" +
+            "}";
+    public final static String USER_NOT_FOUND_404 = "{\n" +
             "    \"status\": \"404 NOT_FOUND\",\n" +
             "    \"reason\": \"Объект не найден\",\n" +
             "    \"message\": \"Пользователя с таким id не существует. userId = 56\",\n" +
             "    \"timestamp\": \"2024-08-10 05:01:47\"\n" +
+            "}";
+    public final static String ROLE_NOT_FOUND_404 = "{\n" +
+            "    \"status\": \"404 NOT_FOUND\",\n" +
+            "    \"reason\": \"Объект не найден\",\n" +
+            "    \"message\": \"Роль с таким id не существует. roleId = 6\",\n" +
+            "    \"timestamp\": \"2024-08-10 21:33:49\"\n" +
+            "}";
+    public final static String DIRECTION_NOT_FOUND_404 = "{\n" +
+            "    \"status\": \"404 NOT_FOUND\",\n" +
+            "    \"reason\": \"Объект не найден\",\n" +
+            "    \"message\": \"Направления с таким id не существует. dirId = 30\",\n" +
+            "    \"timestamp\": \"2024-08-10 22:02:20\"\n" +
             "}";
     public final static String EMAIL_ALREADY_EXIST_409 = "{\n" +
             "    \"status\": \"409 CONFLICT\",\n" +
