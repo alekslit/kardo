@@ -39,14 +39,14 @@ public class JwtProvider {
 
     public String generateAccessToken(User user) {
         final LocalDateTime now = LocalDateTime.now();
-        final Instant accessExpirationInstant = now.plusMinutes(1).atZone(ZoneId.systemDefault()).toInstant();
+        final Instant accessExpirationInstant = now.plusMinutes(15).atZone(ZoneId.systemDefault()).toInstant();
         final Date accessExpiration = Date.from(accessExpirationInstant);
         return Jwts.builder()
                 .subject(user.getEmail())
                 .expiration(accessExpiration)
                 .signWith(jwtAccessSecret)
                 .claim("roles", RoleMapper.roleToRoleName(user.getRoles()))
-                .claim("firstName", user.getFirstName())
+                .claim("id", user.getId())
                 .compact();
     }
 

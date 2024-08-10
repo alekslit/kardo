@@ -8,13 +8,12 @@ public enum RoleName implements GrantedAuthority {
     USER("USER"),
     ADMIN("ADMIN"),
     MODERATOR("MODERATOR"),
-    JUDGE("JUDGE"),
-    GGG("GGG");
+    JUDGE("JUDGE");
 
-    private final String vale;
+    private final String value;
 
     @Override
     public String getAuthority() {
-        return vale;
+        return value;
     }
 }

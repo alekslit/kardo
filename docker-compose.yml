@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  service:
+    build: ./
+    image: kardo-service
+    container_name: kardo_service_container
+    ports:
+      - "8080:8080"
+    depends_on:
+      - service-db
+    environment:
+      - DB_HOST=service-db
+      - DB_PORT=5432
+      - DB_NAME=kardo-db
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+
+  service-db:
+    image: postgres:14-alpine
+    container_name: kardo_db_container
+    ports:
+      - "6541:5432"
+    environment:
+      - POSTGRES_DB=kardo-db
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root

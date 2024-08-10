@@ -3,6 +3,7 @@ package ru.yandex.kardo.authentication.role;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -16,5 +17,18 @@ public final class RoleMapper {
         return roles.stream()
                 .map(RoleMapper::roleToRoleName)
                 .collect(Collectors.toSet());
+    }
+
+    public static RoleDto roleToRoleDto(Role role) {
+        return RoleDto.builder()
+                .id(role.getId())
+                .name(role.getName().toString())
+                .build();
+    }
+
+    public static List<RoleDto> roleToRoleDto(List<Role> roles) {
+        return roles.stream()
+                .map(RoleMapper::roleToRoleDto)
+                .collect(Collectors.toList());
     }
 }

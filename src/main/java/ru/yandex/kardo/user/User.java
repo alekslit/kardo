@@ -3,6 +3,7 @@ package ru.yandex.kardo.user;
 import jakarta.persistence.*;
 import lombok.*;
 import ru.yandex.kardo.authentication.role.Role;
+import ru.yandex.kardo.user.direction.Direction;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -15,8 +16,13 @@ import java.util.Set;
 @Table(name = "users", schema = "public")
 @AllArgsConstructor
 @NoArgsConstructor
-@NamedEntityGraph(name = "userRoles", attributeNodes = @NamedAttributeNode("roles"))
-// TODO Чтобы загрузить сущность с ленивой загрузкой принудительно: @EntityGraph(value = "userRoles")
+@NamedEntityGraphs({
+        @NamedEntityGraph(name = "User.roles", attributeNodes = @NamedAttributeNode("roles")),
+/* TODO удалить:
+
+        @NamedEntityGraph(name = "User.interests", attributeNodes = @NamedAttributeNode("interests")),*/
+        @NamedEntityGraph(name = "User.direction", attributeNodes = @NamedAttributeNode("direction"))
+})
 public class User {
     // идентификатор пользователя:
     @Id
@@ -55,7 +61,7 @@ public class User {
 
     // ссылка на страницу пользователя в социальной сети:
     @Column(name = "social_link")
-    private String social_link;
+    private String socialLink;
 
     // страна проживания пользователя:
     @Column(name = "country")
@@ -71,11 +77,11 @@ public class User {
 
     // ссылка на портфолио пользователя:
     @Column(name = "portfolio_link")
-    private String portfolio_link;
+    private String portfolioLink;
 
     // информация о пользователе / о себе / опыт и достижения:
     @Column(name = "about_user")
-    private String about_user;
+    private String aboutUser;
 
     // пароль от аккаунта пользователя:
     @Column(name = "password")
@@ -91,4 +97,22 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
+
+/* TODO удалить:
+
+    // интересы пользователя (список направлений, которые ему интересны: BMX, Брейкинг и т.д.):
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_directions",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "direction_id"))
+    private Set<Direction> interests;*/
+
+    // направление, которое интересно пользователю:
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "direction_id")
+    private Direction direction;
+
+    // участник пользователь или нет:
+    @Column(name = "participation")
+    private Boolean participation;
 }

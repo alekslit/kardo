@@ -34,7 +34,7 @@ public class FilterChainExceptionHandler extends OncePerRequestFilter {
                     .status(HttpStatus.FORBIDDEN.toString())
                     .reason(e.getMessage())
                     .message(e.getResponseMessage())
-                    .timestamp(DateMapper.dateToString(LocalDateTime.now()))
+                    .timestamp(DateMapper.getExceptionTimestampString(LocalDateTime.now()))
                     .build();
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setContentType("application/json;charset=UTF-8");

@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.expression.WebExpressionAuthorizationManager;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 import ru.yandex.kardo.authentication.filter.FilterChainExceptionHandler;
@@ -32,7 +33,12 @@ public class SecurityConfig {
                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         // TODO указать паттерны:
-                        .requestMatchers("auth/login", "auth/token", "users").permitAll()
+                        .requestMatchers("/**")
+                        .access(new WebExpressionAuthorizationManager("hasIpAddress('127.0.0.1') " +
+                                "or hasIpAddress('::1') or isAuthenticated()"))
+                        .requestMatchers("auth/login", "auth/token", "users", /*TODO удалить: */"users/test",
+                                "users/community/**")
+                        .permitAll()
                         .anyRequest().authenticated())
                 .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

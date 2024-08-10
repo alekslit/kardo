@@ -4,6 +4,7 @@ import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -22,9 +23,37 @@ public class ErrorHandler {
                 .status(HttpStatus.BAD_REQUEST.toString())
                 .reason("Ошибка валидации данных из запроса")
                 .message(e.getMessage())
-                .timestamp(DateMapper.dateToString(LocalDateTime.now()))
+                .timestamp(DateMapper.getExceptionTimestampString(LocalDateTime.now()))
                 .build();
         log.debug("{}: {}", e.getClass().getSimpleName(), e.getMessage());
+
+        return errorResponse;
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleIllegalArgumentException(final IllegalArgumentException e) {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .status(HttpStatus.BAD_REQUEST.toString())
+                .reason("Недопустимый аргумент метода")
+                .message(e.getMessage())
+                .timestamp(DateMapper.getExceptionTimestampString(LocalDateTime.now()))
+                .build();
+        log.debug("{}: {}", e.getClass().getSimpleName(), e.getMessage());
+
+        return errorResponse;
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleMethodArgumentNotValidException(final MethodArgumentNotValidException e) {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .status(HttpStatus.BAD_REQUEST.toString())
+                .reason("Ошибка валидации данных из запроса")
+                .message(e.getFieldError().getDefaultMessage())
+                .timestamp(DateMapper.getExceptionTimestampString(LocalDateTime.now()))
+                .build();
+        log.debug("{}: {}", e.getClass().getSimpleName(), e.getFieldError().getDefaultMessage());
 
         return errorResponse;
     }
@@ -37,13 +66,14 @@ public class ErrorHandler {
                 .status(HttpStatus.UNAUTHORIZED.toString())
                 .reason(e.getMessage())
                 .message(e.getResponseMessage())
-                .timestamp(DateMapper.dateToString(LocalDateTime.now()))
+                .timestamp(DateMapper.getExceptionTimestampString(LocalDateTime.now()))
                 .build();
         log.debug("{}: {}", e.getClass().getSimpleName(), e.getResponseMessage());
 
         return errorResponse;
     }
 
+    /*------Обработчики для статуса 403 (Forbidden)------*/
     @ExceptionHandler
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ErrorResponse handleAccessDeniedException(final AccessDeniedException e) {
@@ -52,9 +82,24 @@ public class ErrorHandler {
                 .status(HttpStatus.FORBIDDEN.toString())
                 .reason("Ошибка доступа")
                 .message(responseMessage)
-                .timestamp(DateMapper.dateToString(LocalDateTime.now()))
+                .timestamp(DateMapper.getExceptionTimestampString(LocalDateTime.now()))
                 .build();
         log.debug("{}: {}", e.getClass().getSimpleName(), responseMessage);
+
+        return errorResponse;
+    }
+
+    /*------Обработчики для статуса 404 (Not found)------*/
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleNotFoundException(final NotFoundException e) {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .status(HttpStatus.NOT_FOUND.toString())
+                .reason(e.getMessage())
+                .message(e.getResponseMessage())
+                .timestamp(DateMapper.getExceptionTimestampString(LocalDateTime.now()))
+                .build();
+        log.debug("{}: {}", e.getClass().getSimpleName(), e.getMessage());
 
         return errorResponse;
     }
@@ -67,7 +112,7 @@ public class ErrorHandler {
                 .status(HttpStatus.CONFLICT.toString())
                 .reason(e.getMessage())
                 .message(e.getResponseMessage())
-                .timestamp(DateMapper.dateToString(LocalDateTime.now()))
+                .timestamp(DateMapper.getExceptionTimestampString(LocalDateTime.now()))
                 .build();
         log.debug("{}: {}", e.getClass().getSimpleName(), e.getResponseMessage());
 
@@ -82,7 +127,7 @@ public class ErrorHandler {
                 .status(HttpStatus.INTERNAL_SERVER_ERROR.toString())
                 .reason("Произошла непредвиденная ошибка")
                 .message("Пожалуйста, обратитесь в службу технической поддержки")
-                .timestamp(DateMapper.dateToString(LocalDateTime.now()))
+                .timestamp(DateMapper.getExceptionTimestampString(LocalDateTime.now()))
                 .build();
         log.debug("500 {}: {}", e.getClass().getSimpleName(), e.getMessage(), e);
 

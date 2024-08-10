@@ -14,7 +14,7 @@ import java.util.Set;
 public class JwtAuthentication implements Authentication {
     private boolean authenticated;
     private String email;
-    private String firstName;
+    private Long id;
     private Set<RoleName> roles;
 
     @Override
@@ -49,6 +49,10 @@ public class JwtAuthentication implements Authentication {
 
     @Override
     public String getName() {
-        return firstName;
+        return null;
+    }
+
+    public Long getId() {
+        return id;
     }
 }

@@ -9,8 +9,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @Builder
-public final class JwtResponse {
+public final class AccessTokenResponse {
     private final String type = "Bearer";
     private final String accessToken;
-    private final String refreshToken;
 }

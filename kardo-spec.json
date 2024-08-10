@@ -1,0 +1,1305 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Kardo",
+    "description": "API спецификация MVP веб-приложения проекта КАРДО",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "PUBLIC: Пользователи",
+      "description": "Публичный API для работы с пользователями"
+    },
+    {
+      "name": "USER: Пользователи",
+      "description": "Приватный API для аутентифицированных пользователей c уровнем доступа USER"
+    },
+    {
+      "name": "ADMIN: Пользователи",
+      "description": "API c уровнем доступа ADMIN для работы с пользователями"
+    },
+    {
+      "name": "PUBLIC: Аутентификация",
+      "description": "API для аутентификации зарегистрированных пользователей"
+    }
+  ],
+  "paths": {
+    "/users": {
+      "post": {
+        "tags": [
+          "PUBLIC: Пользователи"
+        ],
+        "summary": "Регистрация пользователя",
+        "description": "Позволяет зарегистрировать пользователя",
+        "operationId": "createUser",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewUserRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserEmailResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "status": "409 CONFLICT",
+                  "reason": "Объект уже существует",
+                  "message": "Пользователь с таким email уже существует. email = ivanov@mail.ru",
+                  "timestamp": "2024-08-10 01:48:15"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "status": "400 BAD_REQUEST",
+                  "reason": "Ошибка валидации данных из запроса",
+                  "message": "Некорректный адрес электронной почты: ivanov.ru",
+                  "timestamp": "2024-08-10 01:32:27"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "status": "500 INTERNAL_SERVER_ERROR",
+                  "reason": "Произошла непредвиденная ошибка",
+                  "message": "Пожалуйста, обратитесь в службу технической поддержки",
+                  "timestamp": "2024-08-10 01:33:59"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/token": {
+      "post": {
+        "tags": [
+          "authentication-controller"
+        ],
+        "operationId": "getNewAccessToken",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshJwtRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccessTokenResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "tags": [
+          "authentication-controller"
+        ],
+        "operationId": "getNewRefreshToken",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshJwtRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JwtResponseFullDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "PUBLIC: Аутентификация"
+        ],
+        "summary": "Аутентификация пользователя",
+        "description": "Позволяет пройти аутентификацию пользователю",
+        "operationId": "login",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JwtRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JwtResponseFullDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/profile/settings": {
+      "get": {
+        "tags": [
+          "USER: Пользователи"
+        ],
+        "summary": "Получение настроек профиля пользователя",
+        "description": "Позволяет получить текущие данные настроек профиля пользователя",
+        "operationId": "getUserProfileSettings",
+        "responses": {
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "status": "403 FORBIDDEN",
+                  "reason": "Ошибка валидации токена",
+                  "message": "Срок действия токена истек",
+                  "timestamp": "2024-08-10 05:16:06"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "status": "404 NOT_FOUND",
+                  "reason": "Объект не найден",
+                  "message": "Пользователя с таким id не существует. userId = 56",
+                  "timestamp": "2024-08-10 05:01:47"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserProfileSettingsResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "status": "500 INTERNAL_SERVER_ERROR",
+                  "reason": "Произошла непредвиденная ошибка",
+                  "message": "Пожалуйста, обратитесь в службу технической поддержки",
+                  "timestamp": "2024-08-10 01:33:59"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "USER: Пользователи"
+        ],
+        "summary": "Обновление настроек пользователя",
+        "description": "Позволяет обновить данные профиля пользователя",
+        "operationId": "updateUser",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "status": "403 FORBIDDEN",
+                  "reason": "Ошибка валидации токена",
+                  "message": "Срок действия токена истек",
+                  "timestamp": "2024-08-10 05:16:06"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "status": "404 NOT_FOUND",
+                  "reason": "Объект не найден",
+                  "message": "Пользователя с таким id не существует. userId = 56",
+                  "timestamp": "2024-08-10 05:01:47"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserProfileSettingsResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "status": "409 CONFLICT",
+                  "reason": "Объект уже существует",
+                  "message": "Пользователь с таким email уже существует. email = ivanov@mail.ru",
+                  "timestamp": "2024-08-10 01:48:15"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "status": "400 BAD_REQUEST",
+                  "reason": "Ошибка валидации данных из запроса",
+                  "message": "Некорректный адрес электронной почты: ivanov.ru",
+                  "timestamp": "2024-08-10 01:32:27"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "status": "500 INTERNAL_SERVER_ERROR",
+                  "reason": "Произошла непредвиденная ошибка",
+                  "message": "Пожалуйста, обратитесь в службу технической поддержки",
+                  "timestamp": "2024-08-10 01:33:59"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/profile": {
+      "get": {
+        "tags": [
+          "USER: Пользователи"
+        ],
+        "summary": "Получение профиля пользователя",
+        "description": "Позволяет получить данные профиля пользователя",
+        "operationId": "getUserProfile",
+        "responses": {
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "status": "403 FORBIDDEN",
+                  "reason": "Ошибка валидации токена",
+                  "message": "Срок действия токена истек",
+                  "timestamp": "2024-08-10 05:16:06"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "status": "404 NOT_FOUND",
+                  "reason": "Объект не найден",
+                  "message": "Пользователя с таким id не существует. userId = 56",
+                  "timestamp": "2024-08-10 05:01:47"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserProfileResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "status": "500 INTERNAL_SERVER_ERROR",
+                  "reason": "Произошла непредвиденная ошибка",
+                  "message": "Пожалуйста, обратитесь в службу технической поддержки",
+                  "timestamp": "2024-08-10 01:33:59"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/community": {
+      "get": {
+        "tags": [
+          "PUBLIC: Пользователи"
+        ],
+        "summary": "Получение списка пользователей",
+        "description": "Позволяет получить список пользователей комьюнити. Есть возможность фильтрации по параметрам",
+        "operationId": "getAllUserCommunity",
+        "parameters": [
+          {
+            "name": "directions",
+            "in": "query",
+            "description": "Фильтр по направлениям",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "participation",
+            "in": "query",
+            "description": "Фильтр по участникам",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "description": "Фильтр по странам",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "cities",
+            "in": "query",
+            "description": "Фильтр по городам",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "text",
+            "in": "query",
+            "description": "Фильтр по имени пользователя",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "Количество элементов, которые нужно пропустить для формирования текущего набора",
+            "required": true,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Количество элементов в наборе",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserCommunityShortDto"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "status": "400 BAD_REQUEST",
+                  "reason": "Ошибка валидации данных из запроса",
+                  "message": "getAllUserCommunity.from: Параметр запроса from, должен быть положительным числом или нулём.",
+                  "timestamp": "2024-08-10 04:32:51"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "status": "500 INTERNAL_SERVER_ERROR",
+                  "reason": "Произошла непредвиденная ошибка",
+                  "message": "Пожалуйста, обратитесь в службу технической поддержки",
+                  "timestamp": "2024-08-10 01:33:59"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/community/{userId}": {
+      "get": {
+        "tags": [
+          "PUBLIC: Пользователи"
+        ],
+        "summary": "Получение пользователя",
+        "description": "Позволяет получить данные одного из пользователей комьюнити",
+        "operationId": "getOtherUserById",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "id пользователя",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "status": "404 NOT_FOUND",
+                  "reason": "Объект не найден",
+                  "message": "Пользователя с таким id не существует. userId = 56",
+                  "timestamp": "2024-08-10 05:01:47"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserCommunityFullDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "status": "400 BAD_REQUEST",
+                  "reason": "Ошибка валидации данных из запроса",
+                  "message": "getOtherUserById.userId: Параметр запроса userId, должен быть положительным числом.",
+                  "timestamp": "2024-08-10 04:56:50"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "status": "500 INTERNAL_SERVER_ERROR",
+                  "reason": "Произошла непредвиденная ошибка",
+                  "message": "Пожалуйста, обратитесь в службу технической поддержки",
+                  "timestamp": "2024-08-10 01:33:59"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/roles": {
+      "get": {
+        "tags": [
+          "role-controller"
+        ],
+        "operationId": "getAllRoles",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RoleDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/direction": {
+      "get": {
+        "tags": [
+          "direction-controller"
+        ],
+        "operationId": "getAllDirections",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DirectionDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{userId}": {
+      "delete": {
+        "tags": [
+          "ADMIN: Пользователи"
+        ],
+        "summary": "Удаление пользователя",
+        "description": "Позволяет удалить пользователя из БД",
+        "operationId": "deleteUser",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "id пользователя",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserEmailResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "status": "403 FORBIDDEN",
+                  "reason": "Ошибка валидации токена",
+                  "message": "Срок действия токена истек",
+                  "timestamp": "2024-08-10 05:16:06"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "status": "404 NOT_FOUND",
+                  "reason": "Объект не найден",
+                  "message": "Пользователя с таким id не существует. userId = 56",
+                  "timestamp": "2024-08-10 05:01:47"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "status": "400 BAD_REQUEST",
+                  "reason": "Ошибка валидации данных из запроса",
+                  "message": "getOtherUserById.userId: Параметр запроса userId, должен быть положительным числом.",
+                  "timestamp": "2024-08-10 04:56:50"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "status": "500 INTERNAL_SERVER_ERROR",
+                  "reason": "Произошла непредвиденная ошибка",
+                  "message": "Пожалуйста, обратитесь в службу технической поддержки",
+                  "timestamp": "2024-08-10 01:33:59"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/roles/{roleId}": {
+      "delete": {
+        "tags": [
+          "role-controller"
+        ],
+        "operationId": "deleteRole",
+        "parameters": [
+          {
+            "name": "roleId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoleDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/direction/{dirId}": {
+      "delete": {
+        "tags": [
+          "direction-controller"
+        ],
+        "operationId": "deleteDirection",
+        "parameters": [
+          {
+            "name": "dirId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/DirectionDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "NewUserRequest": {
+        "required": [
+          "email",
+          "firstName",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "maxLength": 50,
+            "minLength": 2,
+            "type": "string",
+            "description": "Имя пользователя",
+            "example": "Иван"
+          },
+          "email": {
+            "maxLength": 254,
+            "minLength": 6,
+            "type": "string",
+            "description": "Электронная почта",
+            "example": "ivan@mail.ru"
+          },
+          "password": {
+            "maxLength": 50,
+            "minLength": 8,
+            "type": "string",
+            "description": "Пароль от аккаунта пользователя",
+            "example": "g32jhg4jh23"
+          }
+        },
+        "description": "Данные нового пользователя"
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Код ошибки и статус",
+            "example": "404 NOT_FOUND"
+          },
+          "reason": {
+            "type": "string",
+            "description": "Причина ошибки",
+            "example": "Объект не найден"
+          },
+          "message": {
+            "type": "string",
+            "description": "Подробное описание ошибки",
+            "example": "Пользователя с таким id не существует. userId = 99"
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "Дата и время, когда произошла ошибка",
+            "example": "2024-07-27 06:27:23"
+          }
+        },
+        "description": "Описание ошибки"
+      },
+      "UserEmailResponse": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "Электронная почта",
+            "example": "ivan@mail.ru"
+          }
+        },
+        "description": "Email пользователя в ответ на удаление / создание пользователя"
+      },
+      "RefreshJwtRequest": {
+        "type": "object",
+        "properties": {
+          "refreshToken": {
+            "type": "string"
+          }
+        }
+      },
+      "AccessTokenResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "accessToken": {
+            "type": "string"
+          }
+        }
+      },
+      "JwtResponseFullDto": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "accessToken": {
+            "type": "string"
+          },
+          "refreshToken": {
+            "type": "string"
+          }
+        }
+      },
+      "JwtRequest": {
+        "required": [
+          "email",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "maxLength": 254,
+            "minLength": 6,
+            "type": "string"
+          },
+          "password": {
+            "maxLength": 50,
+            "minLength": 8,
+            "type": "string"
+          }
+        }
+      },
+      "UpdateUserRequest": {
+        "required": [
+          "email",
+          "firstName"
+        ],
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "maxLength": 50,
+            "minLength": 2,
+            "type": "string",
+            "description": "Имя пользователя",
+            "example": "Иван"
+          },
+          "lastName": {
+            "maxLength": 50,
+            "minLength": 2,
+            "type": "string",
+            "description": "Фамилия пользователя",
+            "example": "Иванов"
+          },
+          "patronymic": {
+            "maxLength": 50,
+            "minLength": 2,
+            "type": "string",
+            "description": "Отчество пользователя",
+            "example": "Иванович"
+          },
+          "birthday": {
+            "type": "string",
+            "description": "Дата рождения пользователя",
+            "format": "date",
+            "example": "1995-03-27"
+          },
+          "sex": {
+            "type": "string",
+            "description": "Пол пользователя",
+            "example": "Женский"
+          },
+          "email": {
+            "maxLength": 254,
+            "minLength": 6,
+            "type": "string",
+            "description": "Электронная почта",
+            "example": "ivan@mail.ru"
+          },
+          "phone": {
+            "maxLength": 13,
+            "minLength": 11,
+            "type": "string",
+            "description": "Номер телефона пользователя",
+            "example": "88005555535"
+          },
+          "socialLink": {
+            "maxLength": 200,
+            "minLength": 0,
+            "type": "string",
+            "description": "Ссылка на страницу в социальной сети",
+            "example": "https://rugram.ru/ivan"
+          },
+          "country": {
+            "maxLength": 50,
+            "minLength": 2,
+            "type": "string",
+            "description": "Страна проживания пользователя",
+            "example": "Россия"
+          },
+          "region": {
+            "maxLength": 50,
+            "minLength": 2,
+            "type": "string",
+            "description": "Регион проживания пользователя",
+            "example": "ЯНАО"
+          },
+          "city": {
+            "maxLength": 50,
+            "minLength": 2,
+            "type": "string",
+            "description": "Город проживания пользователя",
+            "example": "Москва"
+          },
+          "portfolioLink": {
+            "maxLength": 200,
+            "minLength": 0,
+            "type": "string",
+            "description": "Ссылка на портфолио пользователя",
+            "example": "https://portfolio.ru/ivan"
+          },
+          "aboutUser": {
+            "maxLength": 5000,
+            "minLength": 20,
+            "type": "string",
+            "description": "Информация о пользователе / о себе / опыт и достижения",
+            "example": "Люблю котов, прогулки и BMX."
+          },
+          "direction": {
+            "maxLength": 20,
+            "minLength": 0,
+            "type": "string",
+            "description": "Направление, которое интересно пользователю",
+            "example": "BMX"
+          },
+          "participation": {
+            "type": "boolean",
+            "description": "Участник пользователь или нет",
+            "example": false
+          }
+        },
+        "description": "Данные для обновления настроек пользователя"
+      },
+      "UserProfileSettingsResponse": {
+        "type": "object",
+        "properties": {
+          "fullName": {
+            "type": "string",
+            "description": "Полное имя пользователя (имя + фамилия)",
+            "example": "Иван Иванов"
+          },
+          "firstName": {
+            "type": "string",
+            "description": "Имя пользователя",
+            "example": "Иван"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "Фамилия пользователя",
+            "example": "Иванов"
+          },
+          "patronymic": {
+            "type": "string",
+            "description": "Отчество пользователя",
+            "example": "Иванович"
+          },
+          "birthday": {
+            "type": "string",
+            "description": "Дата рождения пользователя",
+            "example": "27.03.1995"
+          },
+          "sex": {
+            "type": "string",
+            "description": "Пол пользователя",
+            "example": "Женский"
+          },
+          "email": {
+            "type": "string",
+            "description": "Электронная почта",
+            "example": "ivan@mail.ru"
+          },
+          "phone": {
+            "type": "string",
+            "description": "Номер телефона пользователя",
+            "example": "8 800 555 55 35"
+          },
+          "socialLink": {
+            "type": "string",
+            "description": "Ссылка на страницу в социальной сети",
+            "example": "https://rugram.ru/ivan"
+          },
+          "country": {
+            "type": "string",
+            "description": "Страна проживания пользователя",
+            "example": "Россия"
+          },
+          "region": {
+            "type": "string",
+            "description": "Регион проживания пользователя",
+            "example": "ЯНАО"
+          },
+          "city": {
+            "type": "string",
+            "description": "Город проживания пользователя",
+            "example": "Москва"
+          },
+          "portfolioLink": {
+            "type": "string",
+            "description": "Ссылка на портфолио пользователя",
+            "example": "https://portfolio.ru/ivan"
+          },
+          "aboutUser": {
+            "type": "string",
+            "description": "Информация о пользователе / о себе / опыт и достижения",
+            "example": "Люблю котов, прогулки и BMX."
+          },
+          "direction": {
+            "type": "string",
+            "description": "Направление, которое интересно пользователю",
+            "example": "BMX"
+          },
+          "participation": {
+            "type": "boolean",
+            "description": "Участник пользователь или нет",
+            "example": false
+          }
+        }
+      },
+      "UserProfileResponse": {
+        "type": "object",
+        "properties": {
+          "fullName": {
+            "type": "string",
+            "description": "Полное имя пользователя (имя + фамилия)",
+            "example": "Иван Иванов"
+          },
+          "countryAndCity": {
+            "type": "string",
+            "description": "Страна + город проживания",
+            "example": "Россия, Москва"
+          },
+          "directionAndStatus": {
+            "type": "string",
+            "description": "Информация о пользователе / о себе / опыт и достижения",
+            "example": "Люблю котов, прогулки и BMX."
+          }
+        },
+        "description": "Данные пользователя в его профиле"
+      },
+      "UserCommunityShortDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "id пользователя",
+            "format": "int64",
+            "example": 7
+          },
+          "fullName": {
+            "type": "string",
+            "description": "Полное имя пользователя (имя + фамилия)",
+            "example": "Иван Иванов"
+          },
+          "countryAndCity": {
+            "type": "string",
+            "description": "Страна + город проживания",
+            "example": "Россия, Москва"
+          },
+          "directionAndStatus": {
+            "type": "string",
+            "description": "направление конкурса и статус Участник, при наличии",
+            "example": "BMX [Участник]"
+          }
+        },
+        "description": "Данные о пользователе из комьюнити для общего списка"
+      },
+      "UserCommunityFullDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "id пользователя",
+            "format": "int64",
+            "example": 7
+          },
+          "fullName": {
+            "type": "string",
+            "description": "Полное имя пользователя (имя + фамилия)",
+            "example": "Иван Иванов"
+          },
+          "countryAndCity": {
+            "type": "string",
+            "description": "Страна + город проживания",
+            "example": "Россия, Москва"
+          },
+          "directionAndStatus": {
+            "type": "string",
+            "description": "направление конкурса и статус Участник, при наличии",
+            "example": "BMX [Участник]"
+          },
+          "aboutUser": {
+            "type": "string",
+            "description": "Информация о пользователе / о себе / опыт и достижения",
+            "example": "Люблю котов, прогулки и BMX."
+          }
+        },
+        "description": "Данные о конкретном пользователе из комьюнити"
+      },
+      "RoleDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "DirectionDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,21 +1,12 @@
--- заполним таблицу roles_import:
--- Идентификаторы ролей (1 - USER, 2 - ADMIN, 3 - MODERATOR, 4 - JUDGE)
-INSERT INTO roles_import (name)
-VALUES('USER');
-INSERT INTO roles_import (name)
-VALUES('ADMIN');
-INSERT INTO roles_import (name)
-VALUES('MODERATOR');
-INSERT INTO roles_import (name)
-VALUES('JUDGE');
-
 -- заполним таблицу roles:
-MERGE INTO roles r
-USING roles_import ri
-ON (r.name = ri.name)
-WHEN NOT MATCHED THEN
-INSERT (name)
-VALUES (ri.name);
+-- Идентификаторы ролей (1 - USER, 2 - ADMIN, 3 - MODERATOR, 4 - JUDGE)
+INSERT INTO roles (name)
+VALUES ('USER'), ('ADMIN'), ('MODERATOR'), ('JUDGE')
+ON CONFLICT (name) DO NOTHING;
 
--- удаляем таблицу для импорта:
-DROP TABLE roles_import;
+-- заполним таблицу directions:
+INSERT INTO directions (name)
+VALUES('BMX'), ('KICK_SCOOTERING'), ('HIP_HOP'), ('PARKOUR'),
+      ('FREE_RUNNING'), ('TRICKING'), ('BREAKING'),
+      ('WORKOUT'), ('GRAFFITI'), ('SKATEBOARDING'), ('DJING')
+ON CONFLICT (name) DO NOTHING;
