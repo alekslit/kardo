@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class JwtUtils {
+    /*--------------------Основные методы--------------------*/
     public static JwtAuthentication generateJwtAuthentication(Claims claims) {
         return JwtAuthentication.builder()
                 .email(claims.getSubject())
@@ -34,6 +35,7 @@ public final class JwtUtils {
                 .build();
     }
 
+    /*--------------------Вспомогательные методы--------------------*/
     private static Set<RoleName> getRoleNames(Claims claims) {
         final List<String> roles = claims.get("roles", List.class);
         return roles.stream()

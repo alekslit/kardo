@@ -10,6 +10,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @Builder
+@Schema(description = "Все данные пользователя из настроек профиля")
 public final class UserProfileSettingsResponse {
     // полное имя пользователя(имя + фамилия):
     @Schema(description = "Полное имя пользователя (имя + фамилия)", example = "Иван Иванов")

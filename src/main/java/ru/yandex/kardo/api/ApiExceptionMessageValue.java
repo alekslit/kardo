@@ -26,10 +26,16 @@ public final class ApiExceptionMessageValue {
             "    \"message\": \"Некорректный адрес электронной почты: ivanov.ru\",\n" +
             "    \"timestamp\": \"2024-08-10 01:32:27\"\n" +
             "}";
+    public final static String NOT_USER_BY_EMAIL_401 = "{\n" +
+            "    \"status\": \"401 UNAUTHORIZED\",\n" +
+            "    \"reason\": \"Ошибка аутентификации\",\n" +
+            "    \"message\": \"Пользователя с таким email не существует. email = ivanov@mail.ru\",\n" +
+            "    \"timestamp\": \"2024-08-10 18:45:56\"\n" +
+            "}";
     public final static String NOT_VALID_TOKEN_403 = "{\n" +
             "    \"status\": \"403 FORBIDDEN\",\n" +
             "    \"reason\": \"Ошибка валидации токена\",\n" +
-            "    \"message\": \"Срок действия токена истек\",\n" +
+            "    \"message\": \"Срок действия токена истёк\",\n" +
             "    \"timestamp\": \"2024-08-10 05:16:06\"\n" +
             "}";
     public final static String GET_USER_BY_ID_404 = "{\n" +

@@ -44,7 +44,9 @@ public final class UpdateUserRequest {
     // электронная почта:
     @NotBlank(message = "Адрес электронной почты не может быть пустым")
     @Size(min = 6, max = 254, message = "Длинна email должна быть от {min} до {max} символов.")
-    @Email(message = "Некорректный адрес электронной почты: ${validatedValue}")
+    @Email(regexp = "([A-Za-z0-9]{1,}[\\\\-]{0,1}[A-Za-z0-9]{1,}[\\\\.]{0,1}[A-Za-z0-9]{1,})+@"
+            + "([A-Za-z0-9]{1,}[\\\\-]{0,1}[A-Za-z0-9]{1,}[\\\\.]{0,1}[A-Za-z0-9]{1,})+[\\\\.]{1}[a-z]{2,10}",
+            message = "Некорректный адрес электронной почты: ${validatedValue}")
     @Schema(description = "Электронная почта", example = "ivan@mail.ru")
     private final String email;
 

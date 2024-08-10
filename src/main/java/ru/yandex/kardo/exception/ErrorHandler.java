@@ -8,6 +8,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import ru.yandex.kardo.authentication.filter.FilterChainExceptionHandler;
 import ru.yandex.kardo.util.DateMapper;
 
 import java.time.LocalDateTime;
@@ -74,6 +75,20 @@ public class ErrorHandler {
     }
 
     /*------Обработчики для статуса 403 (Forbidden)------*/
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorResponse handleJwtValidationException(final JwtValidationException e) {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .status(HttpStatus.FORBIDDEN.toString())
+                .reason(e.getMessage())
+                .message(e.getResponseMessage())
+                .timestamp(DateMapper.getExceptionTimestampString(LocalDateTime.now()))
+                .build();
+        log.debug("{}: {} ({})", e.getClass().getSimpleName(), e.getMessage(), e.getResponseMessage());
+
+        return errorResponse;
+    }
+
     @ExceptionHandler
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ErrorResponse handleAccessDeniedException(final AccessDeniedException e) {
