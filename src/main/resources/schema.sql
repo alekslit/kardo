@@ -50,6 +50,7 @@ CREATE TABLE IF NOT EXISTS roles(
 CREATE TABLE IF NOT EXISTS user_roles(
     user_id BIGINT NOT NULL,
     role_id integer NOT NULL,
+    CONSTRAINT uq_user_role UNIQUE (user_id, role_id),
     CONSTRAINT fk_user_roles_to_users FOREIGN KEY (user_id) REFERENCES users(user_id)
     ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT fk_user_roles_to_roles FOREIGN KEY (role_id) REFERENCES roles(role_id)

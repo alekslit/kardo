@@ -7,8 +7,12 @@
   },
   "servers": [
     {
+      "url": "http://51.250.40.10:8080",
+      "description": "Сервер для сборки"
+    },
+    {
       "url": "http://localhost:8080",
-      "description": "Generated server url"
+      "description": "Локальный сервер"
     }
   ],
   "tags": [
@@ -57,18 +61,18 @@
           "required": true
         },
         "responses": {
-          "409": {
-            "description": "Conflict",
+          "400": {
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 },
                 "example": {
-                  "status": "409 CONFLICT",
-                  "reason": "Объект уже существует",
-                  "message": "Пользователь с таким email уже существует. email = ivanov@mail.ru",
-                  "timestamp": "2024-08-10 01:48:15"
+                  "status": "400 BAD_REQUEST",
+                  "reason": "Ошибка валидации данных из запроса",
+                  "message": "Некорректный адрес электронной почты: ivanov.ru",
+                  "timestamp": "2024-08-10 01:32:27"
                 }
               }
             }
@@ -99,18 +103,18 @@
               }
             }
           },
-          "400": {
-            "description": "Bad Request",
+          "409": {
+            "description": "Conflict",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 },
                 "example": {
-                  "status": "400 BAD_REQUEST",
-                  "reason": "Ошибка валидации данных из запроса",
-                  "message": "Некорректный адрес электронной почты: ivanov.ru",
-                  "timestamp": "2024-08-10 01:32:27"
+                  "status": "409 CONFLICT",
+                  "reason": "Объект уже существует",
+                  "message": "Пользователь с таким email уже существует. email = ivanov@mail.ru",
+                  "timestamp": "2024-08-10 01:48:15"
                 }
               }
             }
@@ -137,22 +141,6 @@
           "required": true
         },
         "responses": {
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "status": "401 UNAUTHORIZED",
-                  "reason": "Ошибка аутентификации",
-                  "message": "Пользователя с таким email не существует. email = ivanov@mail.ru",
-                  "timestamp": "2024-08-10 18:45:56"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Internal Server Error",
             "content": {
@@ -194,6 +182,22 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "status": "401 UNAUTHORIZED",
+                  "reason": "Ошибка аутентификации",
+                  "message": "Пользователя с таким email не существует. email = ivanov@mail.ru",
+                  "timestamp": "2024-08-10 18:45:56"
+                }
+              }
+            }
           }
         }
       }
@@ -217,22 +221,6 @@
           "required": true
         },
         "responses": {
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "status": "401 UNAUTHORIZED",
-                  "reason": "Ошибка аутентификации",
-                  "message": "Пользователя с таким email не существует. email = ivanov@mail.ru",
-                  "timestamp": "2024-08-10 18:45:56"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Internal Server Error",
             "content": {
@@ -274,6 +262,22 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "status": "401 UNAUTHORIZED",
+                  "reason": "Ошибка аутентификации",
+                  "message": "Пользователя с таким email не существует. email = ivanov@mail.ru",
+                  "timestamp": "2024-08-10 18:45:56"
+                }
+              }
+            }
           }
         }
       }
@@ -297,18 +301,18 @@
           "required": true
         },
         "responses": {
-          "401": {
-            "description": "Unauthorized",
+          "400": {
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 },
                 "example": {
-                  "status": "401 UNAUTHORIZED",
-                  "reason": "Ошибка аутентификации",
-                  "message": "Пользователя с таким email не существует. email = ivanov@mail.ru",
-                  "timestamp": "2024-08-10 18:45:56"
+                  "status": "400 BAD_REQUEST",
+                  "reason": "Ошибка валидации данных из запроса",
+                  "message": "Некорректный адрес электронной почты: ivanov.ru",
+                  "timestamp": "2024-08-10 01:32:27"
                 }
               }
             }
@@ -339,18 +343,18 @@
               }
             }
           },
-          "400": {
-            "description": "Bad Request",
+          "401": {
+            "description": "Unauthorized",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 },
                 "example": {
-                  "status": "400 BAD_REQUEST",
-                  "reason": "Ошибка валидации данных из запроса",
-                  "message": "Некорректный адрес электронной почты: ivanov.ru",
-                  "timestamp": "2024-08-10 01:32:27"
+                  "status": "401 UNAUTHORIZED",
+                  "reason": "Ошибка аутентификации",
+                  "message": "Пользователя с таким email не существует. email = ivanov@mail.ru",
+                  "timestamp": "2024-08-10 18:45:56"
                 }
               }
             }
@@ -393,22 +397,6 @@
               }
             }
           },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "status": "403 FORBIDDEN",
-                  "reason": "Ошибка валидации токена",
-                  "message": "Срок действия токена истёк",
-                  "timestamp": "2024-08-10 05:16:06"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
@@ -421,6 +409,22 @@
                   "reason": "Объект не найден",
                   "message": "Пользователя с таким id не существует. userId = 56",
                   "timestamp": "2024-08-10 05:01:47"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "status": "403 FORBIDDEN",
+                  "reason": "Ошибка валидации токена",
+                  "message": "Срок действия токена истёк",
+                  "timestamp": "2024-08-10 05:16:06"
                 }
               }
             }
@@ -445,18 +449,18 @@
           "required": true
         },
         "responses": {
-          "409": {
-            "description": "Conflict",
+          "400": {
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 },
                 "example": {
-                  "status": "409 CONFLICT",
-                  "reason": "Объект уже существует",
-                  "message": "Пользователь с таким email уже существует. email = ivanov@mail.ru",
-                  "timestamp": "2024-08-10 01:48:15"
+                  "status": "400 BAD_REQUEST",
+                  "reason": "Ошибка валидации данных из запроса",
+                  "message": "Некорректный адрес электронной почты: ivanov.ru",
+                  "timestamp": "2024-08-10 01:32:27"
                 }
               }
             }
@@ -487,6 +491,22 @@
               }
             }
           },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "status": "404 NOT_FOUND",
+                  "reason": "Объект не найден",
+                  "message": "Пользователя с таким id не существует. userId = 56",
+                  "timestamp": "2024-08-10 05:01:47"
+                }
+              }
+            }
+          },
           "403": {
             "description": "Forbidden",
             "content": {
@@ -503,34 +523,18 @@
               }
             }
           },
-          "400": {
-            "description": "Bad Request",
+          "409": {
+            "description": "Conflict",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 },
                 "example": {
-                  "status": "400 BAD_REQUEST",
-                  "reason": "Ошибка валидации данных из запроса",
-                  "message": "Некорректный адрес электронной почты: ivanov.ru",
-                  "timestamp": "2024-08-10 01:32:27"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "status": "404 NOT_FOUND",
-                  "reason": "Объект не найден",
-                  "message": "Пользователя с таким id не существует. userId = 56",
-                  "timestamp": "2024-08-10 05:01:47"
+                  "status": "409 CONFLICT",
+                  "reason": "Объект уже существует",
+                  "message": "Пользователь с таким email уже существует. email = ivanov@mail.ru",
+                  "timestamp": "2024-08-10 01:48:15"
                 }
               }
             }
@@ -573,22 +577,6 @@
               }
             }
           },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "status": "403 FORBIDDEN",
-                  "reason": "Ошибка валидации токена",
-                  "message": "Срок действия токена истёк",
-                  "timestamp": "2024-08-10 05:16:06"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
@@ -601,6 +589,22 @@
                   "reason": "Объект не найден",
                   "message": "Пользователя с таким id не существует. userId = 56",
                   "timestamp": "2024-08-10 05:01:47"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "status": "403 FORBIDDEN",
+                  "reason": "Ошибка валидации токена",
+                  "message": "Срок действия токена истёк",
+                  "timestamp": "2024-08-10 05:16:06"
                 }
               }
             }
@@ -792,22 +796,6 @@
               }
             }
           },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "status": "400 BAD_REQUEST",
-                  "reason": "Ошибка валидации данных из запроса",
-                  "message": "getOtherUserById.userId: Параметр запроса userId, должен быть положительным числом.",
-                  "timestamp": "2024-08-10 04:56:50"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
@@ -820,6 +808,22 @@
                   "reason": "Объект не найден",
                   "message": "Пользователя с таким id не существует. userId = 56",
                   "timestamp": "2024-08-10 05:01:47"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "status": "400 BAD_REQUEST",
+                  "reason": "Ошибка валидации данных из запроса",
+                  "message": "getOtherUserById.userId: Параметр запроса userId, должен быть положительным числом.",
+                  "timestamp": "2024-08-10 04:56:50"
                 }
               }
             }
@@ -836,22 +840,6 @@
         "description": "Позволяет получить список ролей",
         "operationId": "getAllRoles",
         "responses": {
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "status": "401 UNAUTHORIZED",
-                  "reason": "Ошибка аутентификации",
-                  "message": "Пользователя с таким email не существует. email = ivanov@mail.ru",
-                  "timestamp": "2024-08-10 18:45:56"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Internal Server Error",
             "content": {
@@ -877,6 +865,22 @@
                   "items": {
                     "$ref": "#/components/schemas/RoleDto"
                   }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "status": "401 UNAUTHORIZED",
+                  "reason": "Ошибка аутентификации",
+                  "message": "Пользователя с таким email не существует. email = ivanov@mail.ru",
+                  "timestamp": "2024-08-10 18:45:56"
                 }
               }
             }
@@ -909,22 +913,6 @@
         "description": "Позволяет получить список направлений",
         "operationId": "getAllDirections",
         "responses": {
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "status": "401 UNAUTHORIZED",
-                  "reason": "Ошибка аутентификации",
-                  "message": "Пользователя с таким email не существует. email = ivanov@mail.ru",
-                  "timestamp": "2024-08-10 18:45:56"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Internal Server Error",
             "content": {
@@ -950,6 +938,22 @@
                   "items": {
                     "$ref": "#/components/schemas/DirectionDto"
                   }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "status": "401 UNAUTHORIZED",
+                  "reason": "Ошибка аутентификации",
+                  "message": "Пользователя с таким email не существует. email = ivanov@mail.ru",
+                  "timestamp": "2024-08-10 18:45:56"
                 }
               }
             }
@@ -994,16 +998,6 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "No Content",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserEmailResponse"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Internal Server Error",
             "content": {
@@ -1016,6 +1010,32 @@
                   "reason": "Произошла непредвиденная ошибка",
                   "message": "Пожалуйста, обратитесь в службу технической поддержки",
                   "timestamp": "2024-08-10 01:33:59"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserEmailResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "status": "404 NOT_FOUND",
+                  "reason": "Объект не найден",
+                  "message": "Пользователя с таким id не существует. userId = 56",
+                  "timestamp": "2024-08-10 05:01:47"
                 }
               }
             }
@@ -1051,22 +1071,6 @@
                 }
               }
             }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "status": "404 NOT_FOUND",
-                  "reason": "Объект не найден",
-                  "message": "Пользователя с таким id не существует. userId = 56",
-                  "timestamp": "2024-08-10 05:01:47"
-                }
-              }
-            }
           }
         }
       }
@@ -1092,18 +1096,18 @@
           }
         ],
         "responses": {
-          "401": {
-            "description": "Unauthorized",
+          "500": {
+            "description": "Internal Server Error",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 },
                 "example": {
-                  "status": "401 UNAUTHORIZED",
-                  "reason": "Ошибка аутентификации",
-                  "message": "Пользователя с таким email не существует. email = ivanov@mail.ru",
-                  "timestamp": "2024-08-10 18:45:56"
+                  "status": "500 INTERNAL_SERVER_ERROR",
+                  "reason": "Произошла непредвиденная ошибка",
+                  "message": "Пожалуйста, обратитесь в службу технической поддержки",
+                  "timestamp": "2024-08-10 01:33:59"
                 }
               }
             }
@@ -1127,18 +1131,18 @@
               }
             }
           },
-          "500": {
-            "description": "Internal Server Error",
+          "401": {
+            "description": "Unauthorized",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 },
                 "example": {
-                  "status": "500 INTERNAL_SERVER_ERROR",
-                  "reason": "Произошла непредвиденная ошибка",
-                  "message": "Пожалуйста, обратитесь в службу технической поддержки",
-                  "timestamp": "2024-08-10 01:33:59"
+                  "status": "401 UNAUTHORIZED",
+                  "reason": "Ошибка аутентификации",
+                  "message": "Пользователя с таким email не существует. email = ivanov@mail.ru",
+                  "timestamp": "2024-08-10 18:45:56"
                 }
               }
             }
@@ -1183,6 +1187,25 @@
           }
         ],
         "responses": {
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "status": "500 INTERNAL_SERVER_ERROR",
+                  "reason": "Произошла непредвиденная ошибка",
+                  "message": "Пожалуйста, обратитесь в службу технической поддержки",
+                  "timestamp": "2024-08-10 01:33:59"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
           "401": {
             "description": "Unauthorized",
             "content": {
@@ -1199,9 +1222,6 @@
               }
             }
           },
-          "204": {
-            "description": "No Content"
-          },
           "404": {
             "description": "Not Found",
             "content": {
@@ -1214,22 +1234,6 @@
                   "reason": "Объект не найден",
                   "message": "Направления с таким id не существует. dirId = 30",
                   "timestamp": "2024-08-10 22:02:20"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "status": "500 INTERNAL_SERVER_ERROR",
-                  "reason": "Произошла непредвиденная ошибка",
-                  "message": "Пожалуйста, обратитесь в службу технической поддержки",
-                  "timestamp": "2024-08-10 01:33:59"
                 }
               }
             }

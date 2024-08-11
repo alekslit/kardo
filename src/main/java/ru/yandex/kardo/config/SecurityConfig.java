@@ -36,8 +36,7 @@ public class SecurityConfig {
                         .requestMatchers("/**")
                         .access(new WebExpressionAuthorizationManager("hasIpAddress('127.0.0.1') " +
                                 "or hasIpAddress('::1') or isAuthenticated()"))
-                        .requestMatchers("auth/login", "auth/token", "users", /*TODO удалить: */"users/test",
-                                "users/community/**")
+                        .requestMatchers("auth/login", "auth/token", "users", "users/community/**")
                         .permitAll()
                         .anyRequest().authenticated())
                 .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class)
