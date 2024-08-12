@@ -32,13 +32,18 @@ public class SecurityConfig {
                 .sessionManagement((sessionManagement) -> sessionManagement
                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        // TODO указать паттерны:
                         .requestMatchers("/**")
-                        .access(new WebExpressionAuthorizationManager("hasIpAddress('127.0.0.1') " +
-                                "or hasIpAddress('::1') or isAuthenticated()"))
-                        .requestMatchers("auth/login", "auth/token", "users", "users/community/**")
                         .permitAll()
-                        .anyRequest().authenticated())
+                        // TODO delete:
+                    /*    .requestMatchers("/**")
+                        .access(new WebExpressionAuthorizationManager("hasIpAddress('127.0.0.1') " +
+                                "or hasIpAddress('::1') or hasIpAddress('51.250.40.10') or isAuthenticated()"))*/
+                        .requestMatchers("auth/**", "users", "users/community/**")
+                        .permitAll()
+                        // TODO delete:
+                        /*.anyRequest()*/
+                        .requestMatchers("roles/**", "directions/**", "users/profile/**", "users/{userId}")
+                        .authenticated())
                 .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }

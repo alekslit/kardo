@@ -22,7 +22,7 @@ import static ru.yandex.kardo.api.ApiExceptionMessageValue.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(path = "direction", produces = APPLICATION_JSON_VALUE)
+@RequestMapping(path = "directions", produces = APPLICATION_JSON_VALUE)
 @Validated
 public class DirectionController {
     private final DirectionService directionService;
